@@ -36,4 +36,7 @@ switch(state) {
 		war();
 		check_war_end();
 		break;
+		
+	case GAME_STATE.LOG:
+		break;
 }

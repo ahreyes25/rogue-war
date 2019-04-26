@@ -18,6 +18,7 @@ if (ds_list_size(player.deck) == 0) {
 	if (ds_list_size(player.newCards) == 0) {
 		state = GAME_STATE.IDLE;
 		player.state = CHAR_STATE.DEAD;
+		battle_log("Enemy wins battle!");
 		return;
 	}
 	// Has No Deck, But Has Gained Cards
@@ -25,7 +26,7 @@ if (ds_list_size(player.deck) == 0) {
 		ds_list_copy(player.deck, player.newCards);
 		ds_list_clear(player.newCards);
 		ds_list_shuffle(player.deck);
-		show_debug_message("player deck reset w/ " + string(ds_list_size(player.deck)) + " cards.");
+		//battle_log("player deck reset w/ " + string(ds_list_size(player.deck)) + " cards.");
 	}
 }
 
@@ -34,6 +35,7 @@ if (ds_list_size(enemy.deck) == 0) {
 	if (ds_list_size(enemy.newCards) == 0) {
 		state = GAME_STATE.IDLE;
 		enemy.state = CHAR_STATE.DEAD;
+		battle_log("Player wins battle!");
 		return;
 	}
 	// Has No Deck, But Has Gained Cards
@@ -41,6 +43,6 @@ if (ds_list_size(enemy.deck) == 0) {
 		ds_list_copy(enemy.deck, enemy.newCards);
 		ds_list_clear(enemy.newCards);
 		ds_list_shuffle(enemy.deck);
-		show_debug_message("enemy deck reset w/ " + string(ds_list_size(enemy.deck)) + " cards.");
+		//battle_log("enemy deck reset w/ " + string(ds_list_size(enemy.deck)) + " cards.");
 	}
 }

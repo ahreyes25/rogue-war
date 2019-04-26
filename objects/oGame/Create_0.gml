@@ -1,7 +1,7 @@
 show_debug_overlay(true);
 
 enum GAME_STATE {
-	IDLE, LOAD_DATA, BATTLE, WAR,
+	IDLE, LOAD_DATA, BATTLE, WAR, LOG
 }	
 
 GameData();
@@ -16,3 +16,5 @@ enemyCard	= noone;
 
 warCardsCollected = 0;
 warCardsToCollect = 3;
+
+battleLog = ds_list_create();

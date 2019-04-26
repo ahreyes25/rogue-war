@@ -81,8 +81,8 @@ else {
 if (_pCard != noone && _eCard != noone) {
 	ds_list_add(player.warCards, _pCard);
 	ds_list_add(enemy.warCards, _eCard);
-	show_debug_message("war: adding card " + string(_pCard) + " to player pile.");
-	show_debug_message("war: adding card " + string(_eCard) + " to enemy pile.");
+	//battle_log("war: adding card " + string(_pCard) + " to player pile.");
+	//battle_log("war: adding card " + string(_eCard) + " to enemy pile.");
 }
 // Did Not Successfully Draw Both Cards, Add Drawn Card Back
 else {
