@@ -23,7 +23,7 @@ if (warCardsCollected >= warCardsToCollect) {
 	var winner = flip_card();
 	if (winner != noone) {
 		if (winner == player) {
-			battle_log("war: player wins war!");
+			battle_log("player wins war!");
 		
 			// Collect All War Cards
 			for (var i = 0; i < ds_list_size(player.warCards); i++)
@@ -31,7 +31,7 @@ if (warCardsCollected >= warCardsToCollect) {
 			for (var i = 0; i < ds_list_size(enemy.warCards); i++)
 				ds_list_add(player.newCards, ds_list_find_value(enemy.warCards, i));
 			
-			//battle_log("war: player collects " + string(ds_list_size(player.warCards) + ds_list_size(enemy.warCards)) + " cards.");
+			//battle_log("player collects " + string(ds_list_size(player.warCards) + ds_list_size(enemy.warCards)) + " cards.");
 			battle_log("*************************************");
 		
 			// Clear War lists
@@ -41,7 +41,7 @@ if (warCardsCollected >= warCardsToCollect) {
 			alarm[2] = global.warVictoryTime;
 		}
 		else if (winner == enemy) {
-			battle_log("war: enemy wins war!");
+			battle_log("enemy wins war!");
 		
 			// Collect All War Cards
 			for (var i = 0; i < ds_list_size(enemy.warCards); i++)
@@ -49,7 +49,7 @@ if (warCardsCollected >= warCardsToCollect) {
 			for (var i = 0; i < ds_list_size(player.warCards); i++)
 				ds_list_add(enemy.newCards, ds_list_find_value(player.warCards, i));	
 			
-			//battle_log("war: enemy collects " + string(ds_list_size(player.warCards) + ds_list_size(enemy.warCards)) + " cards.");
+			//battle_log("enemy collects " + string(ds_list_size(player.warCards) + ds_list_size(enemy.warCards)) + " cards.");
 			battle_log("*************************************");
 		
 			// Clear War lists

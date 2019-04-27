@@ -24,32 +24,34 @@ enemyCard  = _eCard; // store card in oGame as last flipped enemy card
 
 var _pCardValue = global.cardData[_pCard, PROP.VALUE];
 var _eCardValue = global.cardData[_eCard, PROP.VALUE];
+var _pCardName  = global.cardData[_pCard, PROP.NAME];
+var _eCardName  = global.cardData[_eCard, PROP.NAME];
 
 var _compare = cards_compare(_pCard, _eCard);
 
 // Player Wins
 if (_compare == ">") {
-	battle_log("flip: player wins: " + string(_pCardValue) + " > " + string(_eCardValue));
+	battle_log("player wins: " + string(_pCardName) + " beats " + string(_eCardName));
 	ds_list_add(player.newCards, _eCard);
 	ds_list_add(player.newCards, _pCard);
 	
 	//if (state == GAME_STATE.WAR)
-	//	battle_log("flip: player collects 2 cards.");
+	//	battle_log("player collects 2 cards.");
 	return player;
 }
 // Enemy Wins
 else if (_compare == "<") {
-	battle_log("flip: enemy wins: " + string(_eCardValue) + " > " + string(_pCardValue));
+	battle_log("enemy wins: " + string(_eCardName) + " beats " + string(_pCardName));
 	ds_list_add(enemy.newCards, _eCard);
 	ds_list_add(enemy.newCards, _pCard);
 	
 	//if (state == GAME_STATE.WAR)
-	//	battle_log("flip: enemy collects 2 cards.");
+	//	battle_log("enemy collects 2 cards.");
 	return enemy;
 }
 // Tie
 else if (_compare == "=") {
-	battle_log("flip: tie: " + string(_pCardValue) + " = " + string(_eCardValue));
+	battle_log("tie: " + string(_pCardName) + " ties with " + string(_eCardName));
 	battle_log("*************** W A R ***************");
 	
 	// Game Tie
@@ -59,7 +61,7 @@ else if (_compare == "=") {
 	// Not End Game Tie, Just Normal War
 	else {
 		if (ds_list_size(player.deck) == 0 && ds_list_size(player.newCards) == 0) {
-			battle_log("flip: war on last card. player loses.");
+			battle_log("war on last card. player loses.");
 			ds_list_add(enemy.newCards, _eCard);
 			ds_list_add(enemy.newCards, _pCard);
 			player.state = CHAR_STATE.DEAD;
@@ -67,7 +69,7 @@ else if (_compare == "=") {
 			battle_log("Enemy wins battle!");
 		}
 		else if (ds_list_size(enemy.deck) == 0 && ds_list_size(enemy.newCards) == 0) {
-			battle_log("flip: war on last card. enemy loses.");
+			battle_log("war on last card. enemy loses.");
 			ds_list_add(player.newCards, _eCard);
 			ds_list_add(player.newCards, _pCard);
 			enemy.state = CHAR_STATE.DEAD;

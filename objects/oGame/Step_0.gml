@@ -1,4 +1,13 @@
 switch(state) {
+	case GAME_STATE.CREATE_DUNGEON:
+		if (!startedCreatingDungeon) {
+			create_dungeon();
+			startedCreatingDungeon = true;
+		}
+		if (createdDungeon)
+			state = GAME_STATE.LOAD_DATA;
+		break;
+		
 	case GAME_STATE.LOAD_DATA:
 		#region Load Card Data Into Player Decks
 		if (instance_exists(player) && instance_exists(enemy)) {

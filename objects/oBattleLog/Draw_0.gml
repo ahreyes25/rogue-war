@@ -25,9 +25,5 @@ for (var i = 0; i < logLength; i++) {
 }
 
 // Compute Log Index
-var logIndex = clamp(round((sy - (mouse_y - lineSpacing)) / lineSpacing), 0, logLength - 1);
+logIndex = clamp(round((sy - (mouse_y - lineSpacing)) / lineSpacing), 0, logLength - 1);
 logIndex = logLength - logIndex - 1;
-
-// Check for Mouse Click
-if (mouse_check_button_pressed(mb_left))
-	show_message(ds_list_find_value(battleLog, logIndex));
