@@ -1,10 +1,34 @@
 event_inherited();
 
-if (keyboard_check_pressed(ord("A"))) 
-	move_left();
-if (keyboard_check_pressed(ord("D"))) 
-	move_right();
-if (keyboard_check_pressed(ord("W"))) 
-	move_up();
-if (keyboard_check_pressed(ord("S"))) 
-	move_down();
+#region Movement
+if (keyboard_check(ord("A"))) {
+	nextMove = move_left;
+	if (alarm[0] == -1)
+		alarm[0] = 1;
+}	
+if (keyboard_check(ord("D"))) { 
+	nextMove = move_right;
+	if (alarm[0] == -1)
+		alarm[0] = 1;
+}
+if (keyboard_check(ord("W"))) {
+	nextMove = move_up;
+	if (alarm[0] == -1)
+		alarm[0] = 1;
+}
+if (keyboard_check(ord("S"))) {
+	nextMove = move_down;
+	if (alarm[0] == -1)
+		alarm[0] = 1;
+}
+if (
+	!keyboard_check(ord("A")) &&
+	!keyboard_check(ord("D")) &&
+	!keyboard_check(ord("W")) &&
+	!keyboard_check(ord("S"))
+)
+{
+	nextMove = noone;
+	alarm[0] = -1;
+}
+#endregion

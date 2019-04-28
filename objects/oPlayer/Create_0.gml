@@ -1,4 +1,4 @@
 event_inherited();
 
-moveFastSpeed	= 5;	// lower number is faster
-moveChargeTime	= 15;
+nextMove = noone;
+moveInterval = 10;

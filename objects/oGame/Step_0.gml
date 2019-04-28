@@ -25,7 +25,10 @@ switch(state) {
 		#endregion
 		
 		#region Spawn Camera
-		instance_create_layer(oPlayer.x, oPlayer.y, "Controllers", oCamera);
+		if (instance_exists(oPlayer))
+			instance_create_layer(oPlayer.x, oPlayer.y, "Controllers", oCamera);
+		else
+			create_dungeon();
 		#endregion
 		break;
 		

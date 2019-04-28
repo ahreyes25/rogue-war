@@ -1,0 +1,1 @@
+oEnemy.executeNextAction = true;

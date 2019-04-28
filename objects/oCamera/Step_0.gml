@@ -5,8 +5,8 @@ xTo = target.x;
 yTo = target.y;
 		
 // Move Camera Object
-x += (xTo - x) * 1;
-y += (yTo - y) * 1;
+x += (xTo - x) * 0.1;
+y += (yTo - y) * 0.1;
 
 // Update Camera View Matrix
 viewmat = matrix_build_lookat(x, y, -100, x, y, 0, 0, 1, 0);

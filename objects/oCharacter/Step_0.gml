@@ -13,7 +13,8 @@ switch(state) {
 		break;
 }
 
-if (x > nextX) x -= global.unitW / 2;
-if (x < nextX) x += global.unitW / 2;
-if (y > nextY) y -= global.unitW / 2;
-if (y < nextY) y += global.unitW / 2;
+var moveScale = 1;
+if (x > nextX) x -= global.unitW / moveScale ;
+if (x < nextX) x += global.unitW / moveScale ;
+if (y > nextY) y -= global.unitW / moveScale ;
+if (y < nextY) y += global.unitW / moveScale ;
