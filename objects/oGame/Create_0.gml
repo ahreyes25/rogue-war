@@ -1,7 +1,8 @@
 show_debug_overlay(true);
 
 enum GAME_STATE {
-	IDLE, CREATE_DUNGEON, LOAD_DATA, BATTLE, WAR, LOG
+	IDLE, CREATE_DUNGEON, BATTLE, WAR, LOG,
+	BATTLE_INTRO, BATTLE_END,
 }	
 
 randomize();
@@ -10,7 +11,8 @@ CardData();
 
 state		= GAME_STATE.CREATE_DUNGEON;
 player		= oPlayer;
-enemy		= oEnemy;
+enemy		= noone;
+enemies		= ds_queue_create();
 playerCard	= noone;
 enemyCard	= noone;
 
@@ -24,5 +26,3 @@ gh	= room_height / global.unitW;
 dungeonGrid = ds_grid_create(gw, gh);
 startedCreatingDungeon = false;
 createdDungeon = false;
-
-//alarm[3] = 30;

@@ -16,7 +16,7 @@ if (!ds_exists(enemy.newCards, ds_type_list)) return;
 // Player Has No Cards Left
 if (ds_list_size(player.deck) == 0) {
 	if (ds_list_size(player.newCards) == 0) {
-		state = GAME_STATE.IDLE;
+		state = GAME_STATE.BATTLE_END;
 		player.state = CHAR_STATE.DEAD;
 		battle_log("Enemy wins battle!");
 		return;
@@ -33,7 +33,7 @@ if (ds_list_size(player.deck) == 0) {
 // Enemy Has No Cards Left
 if (ds_list_size(enemy.deck) == 0) {
 	if (ds_list_size(enemy.newCards) == 0) {
-		state = GAME_STATE.IDLE;
+		state = GAME_STATE.BATTLE_END;
 		enemy.state = CHAR_STATE.DEAD;
 		battle_log("Player wins battle!");
 		return;

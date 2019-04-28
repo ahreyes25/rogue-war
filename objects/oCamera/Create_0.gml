@@ -11,3 +11,5 @@ camera_set_view_mat(cam, viewmat);
 camera_set_proj_mat(cam, projmat);
 
 view_camera[0] = cam;
+
+zoomedOut = false;

@@ -1,2 +1,13 @@
-//draw_set_halign(fa_left);
-//draw_text(10, 50, "game state: " + string(state));
+switch (state) {
+	case GAME_STATE.BATTLE_INTRO:
+		draw_black(0.8);
+		break;
+		
+	case GAME_STATE.BATTLE:
+		draw_black(0.8);
+		break;
+		
+	case GAME_STATE.WAR:
+		draw_black(0.8);
+		break;
+}

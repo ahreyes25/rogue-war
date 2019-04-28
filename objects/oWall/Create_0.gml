@@ -1,3 +1,5 @@
+#region Auto tiling -- WARNING: DISGUSTING SPAGHETTI CODE 
+
 gx = x / global.unitW;
 gy = y / global.unitW;
 
@@ -271,9 +273,4 @@ if (!wallLeft && wallRight && !wallUp && wallDown && !wallUpLeft && !wallDownRig
 if (wallLeft && !wallRight && wallUp && !wallDown && !wallUpLeft && !wallDownRight)
 	sprite_index = sLBR;
 
-
-
-
-
-
-
+#endregion

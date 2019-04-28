@@ -17,3 +17,6 @@ if (ds_exists(dungeonGrid, ds_type_grid)) {
 		}
 	}
 }
+*/
+
+draw_text(10, 50, "game state: " + string(state));

@@ -1,4 +1,5 @@
 event_inherited();
 
-executeNextAction = false;
-nextAction = noone;
+executeNextAction	= false;
+nextAction			= noone;
+attacked			= false;
