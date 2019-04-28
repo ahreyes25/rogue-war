@@ -4,7 +4,7 @@ enum GAME_STATE {
 	IDLE, CREATE_DUNGEON, LOAD_DATA, BATTLE, WAR, LOG
 }	
 
-//randomize();
+randomize();
 GameData();
 CardData();
 
@@ -24,3 +24,5 @@ gh	= room_height / global.unitW;
 dungeonGrid = ds_grid_create(gw, gh);
 startedCreatingDungeon = false;
 createdDungeon = false;
+
+//alarm[3] = 30;

@@ -9,22 +9,24 @@ var tunnelLength	= 0;		// modify in pick_new_direction() also
 var canPlaceRoom	= 0;
 var roomChance		= 0;
 var mxRoomSize 		= 0;
+var numberOfEnemies	= 4;
 
 var count = 0;	// break infinite loop
 
-// Destroy All Wall Objects
+#region Destroy All Old Wall Objects
 with(oWall)
 	instance_destroy();
+#endregion
 
 #region Set to all WALLS
 for (var i = 0; i < gw; i++) {
 	for (var j = 0; j < gh; j++) {
-		ds_grid_set(dungeonGrid, i, j, LAND.WALL);
+		ds_grid_set(dungeonGrid, i, j, DUNGEON.WALL);
 	}
 }
 #endregion
 
-#region Base Level
+#region Establish Base
 while (clusters > 0) {
 	
 	// Start at random point in room
@@ -48,11 +50,11 @@ while (clusters > 0) {
 				for (var j = 0; j < roomHeight; j++) {
 					if (in_bounds(dungeonGrid, cx + i, cy + j)) {
 						if (canOverlap) {
-							ds_grid_set(dungeonGrid, cx + i, cy + j, LAND.ROOM);
+							ds_grid_set(dungeonGrid, cx + i, cy + j, DUNGEON.ROOM);
 						}
 						else {
-							if (ds_grid_get(dungeonGrid, cx + i, cy + j) == LAND.NONE || ds_grid_get(dungeonGrid, cx + i, cy + j) == LAND.WALL) {
-								ds_grid_set(dungeonGrid, cx + i, cy + j, LAND.ROOM);
+							if (ds_grid_get(dungeonGrid, cx + i, cy + j) == DUNGEON.NONE || ds_grid_get(dungeonGrid, cx + i, cy + j) == DUNGEON.WALL) {
+								ds_grid_set(dungeonGrid, cx + i, cy + j, DUNGEON.ROOM);
 							}
 						}
 					}
@@ -66,13 +68,13 @@ while (clusters > 0) {
 			// Place tunnel piece
 			if (canOverlap) {
 				if (in_bounds(dungeonGrid, cx, cy)) {
-					ds_grid_set(dungeonGrid, cx, cy, LAND.TUNNEL);
+					ds_grid_set(dungeonGrid, cx, cy, DUNGEON.TUNNEL);
 				}
 			}
 			else {
 				if (in_bounds(dungeonGrid, cx, cy)) {
-					if (ds_grid_get(dungeonGrid, cx, cy) == LAND.NONE || ds_grid_get(dungeonGrid, cx, cy) == LAND.WALL) {
-						ds_grid_set(dungeonGrid, cx, cy, LAND.TUNNEL);
+					if (ds_grid_get(dungeonGrid, cx, cy) == DUNGEON.NONE || ds_grid_get(dungeonGrid, cx, cy) == DUNGEON.WALL) {
+						ds_grid_set(dungeonGrid, cx, cy, DUNGEON.TUNNEL);
 					}
 				}
 				else {
@@ -124,46 +126,46 @@ while (clusters > 0) {
 }
 #endregion
 
-#region Add Slopes
+#region Add Slopes -- Currently Off
 
 /*
 var slopeChance = 30;
 for (var i = 0; i < gw; i++) {
 	for (var j = 0; j < gh; j++) {
-		if (ds_grid_get(dungeonGrid, i, j) == LAND.ROOM || ds_grid_get(dungeonGrid, i, j) == LAND.TUNNEL) {
+		if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.ROOM || ds_grid_get(dungeonGrid, i, j) == DUNGEON.TUNNEL) {
 			
 			// check left and bottom
 			if (in_bounds(dungeonGrid, i - 1, j) && in_bounds(dungeonGrid, i, j + 1)) {
-				if (ds_grid_get(dungeonGrid, i - 1, j) == LAND.WALL && ds_grid_get(dungeonGrid, i, j + 1) == LAND.WALL) {
+				if (ds_grid_get(dungeonGrid, i - 1, j) == DUNGEON.WALL && ds_grid_get(dungeonGrid, i, j + 1) == DUNGEON.WALL) {
 					if (chance(slopeChance)) {
-						ds_grid_set(dungeonGrid, i, j, LAND.SLOPE);
+						ds_grid_set(dungeonGrid, i, j, DUNGEON.SLOPE);
 					}
 				}
 			}
 			
 			// check right and bottom
 			if (in_bounds(dungeonGrid, i + 1, j) && in_bounds(dungeonGrid, i, j + 1)) {
-				if (ds_grid_get(dungeonGrid, i + 1, j) == LAND.WALL && ds_grid_get(dungeonGrid, i, j + 1) == LAND.WALL) {
+				if (ds_grid_get(dungeonGrid, i + 1, j) == DUNGEON.WALL && ds_grid_get(dungeonGrid, i, j + 1) == DUNGEON.WALL) {
 					if (chance(slopeChance)) {
-						ds_grid_set(dungeonGrid, i, j, LAND.SLOPE);
+						ds_grid_set(dungeonGrid, i, j, DUNGEON.SLOPE);
 					}
 				}
 			}
 			
 			// check left and top
 			if (in_bounds(dungeonGrid, i - 1, j) && in_bounds(dungeonGrid, i, j - 1)) {
-				if (ds_grid_get(dungeonGrid, i - 1, j) == LAND.WALL && ds_grid_get(dungeonGrid, i, j - 1) == LAND.WALL) {
+				if (ds_grid_get(dungeonGrid, i - 1, j) == DUNGEON.WALL && ds_grid_get(dungeonGrid, i, j - 1) == DUNGEON.WALL) {
 					if (chance(slopeChance)) {
-						ds_grid_set(dungeonGrid, i, j, LAND.SLOPE);
+						ds_grid_set(dungeonGrid, i, j, DUNGEON.SLOPE);
 					}
 				}
 			}
 			
 			// check right and top
 			if (in_bounds(dungeonGrid, i + 1, j) && in_bounds(dungeonGrid, i, j - 1)) {
-				if (ds_grid_get(dungeonGrid, i + 1, j) == LAND.WALL && ds_grid_get(dungeonGrid, i, j - 1) == LAND.WALL) {
+				if (ds_grid_get(dungeonGrid, i + 1, j) == DUNGEON.WALL && ds_grid_get(dungeonGrid, i, j - 1) == DUNGEON.WALL) {
 					if (chance(slopeChance)) {
-						ds_grid_set(dungeonGrid, i, j, LAND.SLOPE);
+						ds_grid_set(dungeonGrid, i, j, DUNGEON.SLOPE);
 					}
 				}
 			}
@@ -173,15 +175,15 @@ for (var i = 0; i < gw; i++) {
 */
 #endregion
 
-#region Make Sure Room Is Surrounded By Walls
+#region Make Sure Room Border Is Surrounded By Walls
 
 for (var i = 0; i < gw; i++) {
-	ds_grid_set(dungeonGrid, i, 0, LAND.WALL);
-	ds_grid_set(dungeonGrid, i, gh - 1, LAND.WALL);
+	ds_grid_set(dungeonGrid, i, 0, DUNGEON.WALL);
+	ds_grid_set(dungeonGrid, i, gh - 1, DUNGEON.WALL);
 }
 for (var j = 0; j < gh; j++) {
-	ds_grid_set(dungeonGrid, 0, j, LAND.WALL);
-	ds_grid_set(dungeonGrid, gw - 1, j, LAND.WALL);
+	ds_grid_set(dungeonGrid, 0, j, DUNGEON.WALL);
+	ds_grid_set(dungeonGrid, gw - 1, j, DUNGEON.WALL);
 }
 
 #endregion
@@ -190,46 +192,435 @@ for (var j = 0; j < gh; j++) {
 
 for (var i = 0; i < gw; i++) {
 	for (var j = 0; j < gh; j++) {
-		if (ds_grid_get(dungeonGrid, i, j) == LAND.WALL) {
+		if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.WALL) {
 			var leftEmpty	= false;
 			var rightEmpty	= false;
 			var upEmpty		= false;
 			var downEmpty	= false;
 				
 			// Check Left
-			if (in_bounds(dungeonGrid, i - 1, j))
-				if (ds_grid_get(dungeonGrid, i - 1, j) != LAND.WALL)
+			if (in_bounds(dungeonGrid, i - 1, j)) {
+				if (ds_grid_get(dungeonGrid, i - 1, j) != DUNGEON.WALL)
 					leftEmpty = true;
+				else
+					continue;
+			}
+			else
+				continue;
 					
 			// Check Right
-			if (in_bounds(dungeonGrid, i + 1, j))
-				if (ds_grid_get(dungeonGrid, i + 1, j) != LAND.WALL)
+			if (in_bounds(dungeonGrid, i + 1, j)) {
+				if (ds_grid_get(dungeonGrid, i + 1, j) != DUNGEON.WALL)
 					rightEmpty = true;
+				else
+					continue;
+			}
+			else
+				continue;
 					
 			// Check Up 
-			if (in_bounds(dungeonGrid, i, j - 1))
-				if (ds_grid_get(dungeonGrid, i, j - 1) != LAND.WALL)
+			if (in_bounds(dungeonGrid, i, j - 1)) {
+				if (ds_grid_get(dungeonGrid, i, j - 1) != DUNGEON.WALL)
 					upEmpty = true;
+				else
+					continue;
+			}
+			else
+				continue;
 					
 			// Check Down
 			if (in_bounds(dungeonGrid, i, j + 1))
-				if (ds_grid_get(dungeonGrid, i, j + 1) != LAND.WALL)
+				if (ds_grid_get(dungeonGrid, i, j + 1) != DUNGEON.WALL)
 					downEmpty = true;
 					
 			// Delete
 			if (leftEmpty + rightEmpty + upEmpty + downEmpty >= 3)
-				ds_grid_set(dungeonGrid, i, j, LAND.NONE);
+				ds_grid_set(dungeonGrid, i, j, DUNGEON.NONE);
 		}
 	}
 }
 
 #endregion
 
-#region Create Wall Pieces
+#region Convert All Tunnel Pieces to None
+for (var i = 0; i < gw; i++) {
+	for (var j = 0; j < gh; j++) {
+		if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.TUNNEL)
+			ds_grid_set(dungeonGrid, i, j, DUNGEON.NONE);
+	}
+}
+#endregion
+
+#region Create Wall Instances
 for (var i = 0; i < gw; i++) {
 	for (var j = 0; j < gh; j++) {
 		if (ds_grid_get(dungeonGrid, i, j) == 0) {
 			instance_create_layer(global.unitW * i, global.unitW * j, "Instances", oWall);	
+		}
+	}
+}
+#endregion
+
+#region Set Player Spawn Point
+var playerCorner = choose("topLeft", "topRight", "bottomRight", "bottomLeft");
+var placed = false;
+
+// Look For Room of at Least 3x3	
+switch (playerCorner) {
+	#region TopLeft
+	case "topLeft":
+		for (var j = 0; j < gh; j++) {
+			for (var i = 0; i < gw; i++) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k < i + 3; k++) {
+						for (var l = j; l < j + 3; l++) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i + 1, j + 1, DUNGEON.PLAYER_SPAWN);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+	#region TopRight
+	case "topRight":
+		for (var j = 0; j < gh; j++) {
+			for (var i = gw - 1; i >= 0; i--) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k > i - 3; k--) {
+						for (var l = j; l < j + 3; l++) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i - 1, j + 1, DUNGEON.PLAYER_SPAWN);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+	#region BottomRight
+	case "bottomRight":
+		for (var j = gh - 1; j >= 0; j--) {
+			for (var i = gw - 1; i >= 0; i--) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k > i - 3; k--) {
+						for (var l = j; l > j - 3; l--) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i - 1, j - 1, DUNGEON.PLAYER_SPAWN);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+	#region BottomLeft
+	case "bottomLeft":
+		for (var j = gh - 1; j >= 0; j--) {
+			for (var i = 0; i < gw; i++) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k < i + 3; k++) {
+						for (var l = j; l > j - 3; l--) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i + 1, j - 1, DUNGEON.PLAYER_SPAWN);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+}
+#endregion
+
+#region Set Exit Point
+if (playerCorner == "topLeft" || playerCorner == "topRight")
+	var exitCorner = choose("bottomLeft", "bottomRight");
+else
+	var exitCorner = choose("topLeft", "topRight");
+var placed = false;
+
+// Look For Room of at Least 3x3	
+switch (exitCorner) {
+	#region TopLeft
+	case "topLeft":
+		for (var j = 0; j < gh; j++) {
+			for (var i = 0; i < gw; i++) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k < i + 3; k++) {
+						for (var l = j; l < j + 3; l++) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i + 1, j + 1, DUNGEON.EXIT);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+	#region TopRight
+	case "topRight":
+		for (var j = 0; j < gh; j++) {
+			for (var i = gw - 1; i >= 0; i--) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k > i - 3; k--) {
+						for (var l = j; l < j + 3; l++) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i - 1, j + 1, DUNGEON.EXIT);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+	#region BottomRight
+	case "bottomRight":
+		for (var j = gh - 1; j >= 0; j--) {
+			for (var i = gw - 1; i >= 0; i--) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k > i - 3; k--) {
+						for (var l = j; l > j - 3; l--) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i - 1, j - 1, DUNGEON.EXIT);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+	#region BottomLeft
+	case "bottomLeft":
+		for (var j = gh - 1; j >= 0; j--) {
+			for (var i = 0; i < gw; i++) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+					// Look 2 Right & 2 Down
+					var empty = true;
+					for (var k = i; k < i + 3; k++) {
+						for (var l = j; l > j - 3; l--) {
+							if (in_bounds(dungeonGrid, k, l)) {
+								if (ds_grid_get(dungeonGrid, k, l) != DUNGEON.NONE) {
+									empty = false;
+									break;
+								}
+							}
+							else {
+								empty = false;
+								break;
+							}
+						}
+					}
+					// Found Empty, Place Spawn Point
+					if (empty) {
+						ds_grid_set(dungeonGrid, i + 1, j - 1, DUNGEON.EXIT);
+						placed = true;
+						break;
+					}
+				}
+				if (placed)
+					break;
+			}
+			if (placed)
+				break;
+		}
+		break;
+	#endregion
+	
+}
+#endregion
+
+#region Place Enemies 
+var numberOfEnemiesPlaced = 0;
+for (var i = 0; i < gw; i++) {
+	for (var j = 0; j < gh; j++) {
+		if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+			if (chance(1) && numberOfEnemiesPlaced < numberOfEnemies) {
+				ds_grid_set(dungeonGrid, i, j, DUNGEON.ENEMY_SPAWN);
+				numberOfEnemiesPlaced++;
+			}
+		}
+	}
+}
+
+#endregion
+
+#region Place Treasure Chests
+// Place in Niche Spot
+for (var i = 0; i < gw; i++) {
+	for (var j = 0; j < gh; j++) {
+		if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.NONE) {
+			var leftEmpty	= false;
+			var rightEmpty	= false;
+			var upEmpty		= false;
+			var downEmpty	= false;
+			// Check Four Sides
+			if (in_bounds(dungeonGrid, i - 1, j))
+				if (ds_grid_get(dungeonGrid, i - 1, j) != DUNGEON.WALL)
+					leftEmpty = true;
+				
+			if (in_bounds(dungeonGrid, i + 1, j))
+				if (ds_grid_get(dungeonGrid, i + 1, j) != DUNGEON.WALL)
+					rightEmpty = true;
+		
+			if (in_bounds(dungeonGrid, i, j + 1))
+				if (ds_grid_get(dungeonGrid, i, j + 1) != DUNGEON.WALL)
+					downEmpty = true;
+			
+			if (in_bounds(dungeonGrid, i, j - 1))
+				if (ds_grid_get(dungeonGrid, i, j - 1) != DUNGEON.WALL)
+					upEmpty = true;
+				
+			if ((leftEmpty + rightEmpty + upEmpty + downEmpty) == 1)
+				ds_grid_set(dungeonGrid, i, j, DUNGEON.CHEST);
 		}
 	}
 }

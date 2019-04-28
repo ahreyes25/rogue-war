@@ -8,3 +8,6 @@ enemy = noone;
 deck	 = ds_list_create();
 newCards = ds_list_create();
 warCards = ds_list_create();
+
+nextX = x;
+nextY = y;

@@ -1,11 +1,32 @@
 switch(state) {
 	case GAME_STATE.CREATE_DUNGEON:
+		#region Create Dungeon
 		if (!startedCreatingDungeon) {
 			create_dungeon();
 			startedCreatingDungeon = true;
 		}
 		if (createdDungeon)
 			state = GAME_STATE.LOAD_DATA;
+		#endregion
+		
+		#region Spawn Player, Enemies, Exit, Chest
+		for (var i = 0; i < gw; i++) {
+			for (var j = 0; j < gh; j++) {
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.PLAYER_SPAWN)
+					instance_create_layer(i * global.unitW, j * global.unitW, "Instances", oPlayer);
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.EXIT)
+					instance_create_layer(i * global.unitW, j * global.unitW, "Instances", oExit);	
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.ENEMY_SPAWN)
+					instance_create_layer(i * global.unitW, j * global.unitW, "Instances", oEnemy);	
+				if (ds_grid_get(dungeonGrid, i, j) == DUNGEON.CHEST)
+					instance_create_layer(i * global.unitW, j * global.unitW, "Instances", oChest);	
+			}
+		}
+		#endregion
+		
+		#region Spawn Camera
+		instance_create_layer(oPlayer.x, oPlayer.y, "Controllers", oCamera);
+		#endregion
 		break;
 		
 	case GAME_STATE.LOAD_DATA:
@@ -30,8 +51,8 @@ switch(state) {
 			
 			state = GAME_STATE.IDLE;
 		}
-		break;
 		#endregion
+		break;
 		
 	case GAME_STATE.IDLE:
 		break;
